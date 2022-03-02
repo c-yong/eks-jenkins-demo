@@ -71,7 +71,6 @@ pipeline{
         stage('Deploy EKS') {
 			steps {
 				withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
-					steps {
 						sh "aws iam list-account-aliases"
 						sh "aws eks --region $region update-kubeconfig --name $clusterName"
 						sh 'echo Hello World'
@@ -81,7 +80,6 @@ pipeline{
 						// sh "sed -i 's/hellonodejs:latest/hellonodejs:eks/g' deploy.yaml"
 						// sh 'kubectl apply -f deploy.yaml'
 						// sh 'kubectl rollout restart deployment hello-world-nodejs'
-					}
 				}
 			}
 		}
