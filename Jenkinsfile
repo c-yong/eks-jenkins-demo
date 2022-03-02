@@ -53,13 +53,14 @@ pipeline{
 			  withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
 
 
-				  sh "aws iam list-account-aliases"
-				  sh "aws eks --region $region update-kubeconfig --name $clusterName"
+				sh "aws iam list-account-aliases"
+				sh "aws eks --region $region update-kubeconfig --name $clusterName"
 
 				//   sh "cp /var/lib/jenkins/.kube/config  /home/ubuntu/.kube/config"
 
-				  sh 'kubectl get pods'
-				   sh 'kubectl get nodes'
+				sh 'kubectl get pods'
+				sh 'kubectl get nodes'
+				sh 'kubectl apply -f eks-example-deployment.yaml'
 				  
 			  }
 
