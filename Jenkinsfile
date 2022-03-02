@@ -3,7 +3,7 @@ pipeline{
 
 	 environment {
     	registry = "c-yong/eks-jenkins-demo"
-    	registryCredential = 'docker-user-pass'
+    	registryCredential = 'docker-hub-chanitha'
     	dockerImage = ''
 		region = "ap-southeast-1"
 		clusterName  = "chanitha-labs"
@@ -14,31 +14,30 @@ pipeline{
 	stages {
 
 
-		// stage('Build') {
-		// 	steps {
-		// 	script {
-        //  		 dockerImage = docker.build registry + ":$BUILD_NUMBER"
-       	// 	 }   
-		// 	}
-		// }
+		stage('Build') {
+			steps {
+			script {
+         		 dockerImage = docker.build registry + ":$BUILD_NUMBER"
+       		 }   
+			}
+		}
   
 
-		// stage('Push image') {
-		// 	steps {
-		// 		 script {
-        //     		docker.withRegistry( '', registryCredential ) {
-        //    			dockerImage.push()
-        //  		 }
-		// 	}
-		// }
-
-		// }
+		stage('Push image') {
+			steps {
+				 script {
+            		docker.withRegistry( '', registryCredential ) {
+           			dockerImage.push()
+         		 }
+			}
+			}
+		}
         
-		// stage('Remove Unused docker image') {
-     	// 	 steps{
-        // 		sh "docker rmi $registry:$BUILD_NUMBER"
-     	//  	}
-   		// }
+		stage('Remove Unused docker image') {
+     		 steps{
+        		sh "docker rmi $registry:$BUILD_NUMBER"
+     	 	}
+   		}
 
 		stage('aws creadentials'){
 			  steps {
@@ -51,7 +50,7 @@ pipeline{
 			// 	]]) {
    			// 		 // AWS Code
 			// 	}
-			  withAWS(credentials: 'eks-credentials', region: 'ap-southeast-1') {
+			  withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
 
 
 				  sh "aws iam list-account-aliases"
