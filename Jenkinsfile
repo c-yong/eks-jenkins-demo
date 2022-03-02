@@ -2,7 +2,7 @@
 pipeline{
 
 	 environment {
-    	registry = "c-yong/eks-jenkins-demo"
+    	registry = "chanithadocker/eks-jenkins-demo"
     	registryCredential = 'docker-hub-chanitha'
     	dockerImage = ''
 		region = "ap-southeast-1"
