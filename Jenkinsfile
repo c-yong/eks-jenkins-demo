@@ -39,8 +39,8 @@ pipeline{
      	 	}
    		}
 
-		stage('aws creadentials'){
-			  steps {
+		// stage('aws creadentials'){
+		// 	  steps {
 			  
 			//   withCredentials([[
    			// 		$class: 'AmazonWebServicesCredentialsBinding',
@@ -50,32 +50,39 @@ pipeline{
 			// 	]]) {
    			// 		 // AWS Code
 			// 	}
-			  withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
+			//   withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
 
 
-				sh "aws iam list-account-aliases"
-				sh "aws eks --region $region update-kubeconfig --name $clusterName"
+			// 	sh "aws iam list-account-aliases"
+			// 	sh "aws eks --region $region update-kubeconfig --name $clusterName"
 
-				//   sh "cp /var/lib/jenkins/.kube/config  /home/ubuntu/.kube/config"
+			// 	//   sh "cp /var/lib/jenkins/.kube/config  /home/ubuntu/.kube/config"
 
-				sh 'kubectl get pods'
-				sh 'kubectl get nodes'
-				sh 'kubectl apply -f eks-example-deployment.yaml'
+			// 	sh 'kubectl get pods'
+			// 	sh 'kubectl get nodes'
+			// 	sh 'kubectl apply -f eks-example-deployment.yaml'
 				  
-			  }
+			//   }
 
-			  }
+		// 	  }
 
-		}
+		// }
 
-        stage('eks deploy') {
-
+        stage('Deploy EKS') {
 			steps {
-				sh 'echo Hello World'
-				sh 'kubectl get pods'
-                // sh "sed -i 's/hellonodejs:latest/hellonodejs:eks/g' deploy.yaml"
-                // sh 'kubectl apply -f deploy.yaml'
-                // sh 'kubectl rollout restart deployment hello-world-nodejs'
+				withAWS(credentials: 'aws-chanitha', region: 'ap-southeast-1') {
+					steps {
+						sh "aws iam list-account-aliases"
+						sh "aws eks --region $region update-kubeconfig --name $clusterName"
+						sh 'echo Hello World'
+						sh 'kubectl get pods'
+						sh 'kubectl get nodes'
+						sh 'kubectl apply -f eks-example-deployment.yaml'
+						// sh "sed -i 's/hellonodejs:latest/hellonodejs:eks/g' deploy.yaml"
+						// sh 'kubectl apply -f deploy.yaml'
+						// sh 'kubectl rollout restart deployment hello-world-nodejs'
+					}
+				}
 			}
 		}
 	}
